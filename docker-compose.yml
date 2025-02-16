@@ -1,0 +1,44 @@
+services:
+  auth-svc:
+    build:
+      context: ./auth-svc
+    ports:
+      - "5000:5000"
+    networks:
+      - project1-network
+    env_file:
+      - .env
+
+  enterdata-app:
+    build:
+      context: ./enterdata-app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - auth-svc
+      - player-db
+    networks:
+      - project1-network
+    env_file:
+      - .env
+
+  player-db:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - my-db:/var/lib/mysql
+      - ./mysql_db:/docker-entrypoint-initdb.d
+    networks:
+      - project1-network
+    env_file:
+      - .env
+
+networks:
+  project1-network:
+    driver: bridge
+
+volumes:
+  my-db:
+

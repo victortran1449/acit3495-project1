@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    title Show Results
+  body
+    h1 Player Stats
+    if stats
+      h2 Top Player
+      p
+        | ID: #{stats.top_player.id}
+        br
+        | Name: #{stats.top_player.name}
+        br
+        | Points: #{stats.top_player.points}
+
+      h2 Worst Player
+      p
+        | ID: #{stats.worse_player.id}
+        br
+        | Name: #{stats.worse_player.name}
+        br
+        | Points: #{stats.worse_player.points}
+
+      h2 Average Points
+      p= stats.average_points
+    else
+      p Stats not available

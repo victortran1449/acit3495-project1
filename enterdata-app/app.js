@@ -10,23 +10,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'))
 app.set('view engine', 'pug');
 
-// Create MySQL connection
-const db = mysql.createConnection({
-  host: 'player-db',
-  port: 3306,
-  user: process.env.MYSQL_USER, 
-  password: process.env.MYSQL_PASSWORD, 
-  database: process.env.MYSQL_DATABASE
-});
-
-// Connect to MySQL
-db.connect(err => {
-  if (err) {
-    console.error('Database connection failed:', err.stack);
-    return;
-  }
-  console.log('Connected to MySQL');
-});
+function getDbConnection() {
+    return mysql.createConnection({
+      host: 'player-db',
+      port: 3306,
+      user: process.env.MYSQL_USER,
+      password: process.env.MYSQL_PASSWORD,
+      database: process.env.MYSQL_DATABASE
+    });
+}
 
 // Route to insert data
 app.post('/enter_data', (req, res) => {
@@ -35,8 +27,11 @@ app.post('/enter_data', (req, res) => {
     return res.status(400).json({ error: 'Invalid data' });
   }
 
+  const db = getDbConnection();
+
   const sql = 'INSERT INTO players (name, points) VALUES (?, ?)';
   db.query(sql, [name, points], (err, result) => {
+    db.end();
     if (err) return res.status(500).json({ error: err.message });
     console.log(`Player data entered, playerId :${result.insertId}`);
     res.redirect("/")

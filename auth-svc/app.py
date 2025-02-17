@@ -37,7 +37,7 @@ def register():
 					password=request.form.get("password"))
 		db.session.add(user)
 		db.session.commit()
-		return redirect(url_for("login"))
+		return render_template("login.html")
 	return render_template("sign_up.html")
     
 @app.route("/login", methods=["GET", "POST"])
@@ -48,9 +48,8 @@ def login():
         if user is None:
             return render_template("login.html")
         if user.password == request.form.get("password"):
+            print("User authenticated!")
             login_user(user)
-            print(redirect_url)
-            response = make_response(redirect(redirect_url))
             return redirect(redirect_url)
     return render_template("login.html")
 

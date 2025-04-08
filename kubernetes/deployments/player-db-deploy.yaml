@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: player-db
+spec:
+  selector:
+    matchLabels:
+      app: player-db
+  template:
+    metadata:
+      labels:
+        app: player-db
+    spec:
+      containers:
+        - name: player-db
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: MYSQL_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+          volumeMounts:
+            - name: player-db-data
+              mountPath: /var/lib/mysql
+            - name: db-init
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: player-db-data
+          persistentVolumeClaim:
+            claimName: player-db-pvc
+        - name: db-init
+          configMap:
+            name: mysql-init-config

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: player-db
+spec:
+  type: ClusterIP
+  selector:
+    app: player-db
+  ports:
+    - port: 3306
+      targetPort: 3306

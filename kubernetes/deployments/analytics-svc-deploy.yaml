@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-deploy
+spec:
+  selector:
+    matchLabels:
+      app: analytics-svc
+  template:
+    metadata:
+      labels:
+        app: analytics-svc
+    spec:
+      containers:
+      - name: analytics-svc
+        image: victortran1449/analytics-svc:latest
+        env:
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secret
+              key: MYSQL_PASSWORD
+        envFrom:
+        - configMapRef:
+            name: app-configmap

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stats-db
+spec:
+  selector:
+    matchLabels:
+      app: stats-db
+  template:
+    metadata:
+      labels:
+        app: stats-db
+    spec:
+      containers:
+        - name: stats-db
+          image: mongo
+          ports:
+            - containerPort: 27017
+          envFrom:
+            - configMapRef:
+                name: app-configmap
+          volumeMounts:
+            - name: stats-db-data
+              mountPath: /data/db
+      volumes:
+        - name: stats-db-data
+          persistentVolumeClaim:
+            claimName: stats-db-pvc

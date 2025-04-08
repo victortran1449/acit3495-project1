@@ -37,7 +37,7 @@ def register():
 					password=request.form.get("password"))
 		db.session.add(user)
 		db.session.commit()
-		return render_template("login.html")
+		return redirect(url_for("login"))
 	return render_template("sign_up.html")
     
 @app.route("/login", methods=["GET", "POST"])

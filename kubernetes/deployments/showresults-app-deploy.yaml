@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: showresults-app-deploy
+spec:
+  selector:
+    matchLabels:
+      app: showresults-app
+  template:
+    metadata:
+      labels:
+        app: showresults-app
+    spec:
+      containers:
+      - name: showresults-app
+        image: victortran1449/showresults-app:latest
+        envFrom:
+        - configMapRef:
+            name: app-configmap
+        ports:
+        - containerPort: 3000

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+  # MySQL 
+  MYSQL_RANDOM_ROOT_PASSWORD: "1"
+  MYSQL_USER: "victor"
+  MYSQL_DATABASE: "players"
+
+  # MongoDB
+  MONGO_INITDB_DATABASE: "stats"
+  MONGO_COLLECTION: "players_stats"

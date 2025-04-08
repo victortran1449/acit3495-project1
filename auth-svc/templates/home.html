@@ -6,8 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>Auth Service</title>
 	<style>
-	h1 {
+	#logged-in {
 		color: green;
+	}
+	#logged-out {
+		color: red;
 	}
 	</style>
 </head>
@@ -19,10 +22,10 @@
 	</ul>
 	</nav>
 	{% if current_user.is_authenticated %}
-	<h1>You are logged in</h1>
+	<h1 id="logged-in">You are logged in</h1>
 	<a href="/logout">Logout</a>
 	{% else %}
-	<h1>You are not logged in</h1>
+	<h1 id="logged-out">You are not logged in</h1>
 	{% endif %}
 </body>
 </html>
